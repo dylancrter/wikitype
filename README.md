@@ -1,5 +1,5 @@
 # wikitype
-A way to learn about any topic on wikipedia while improving your typing skills! It has a React frontend, Express backend, and Postgres database. Some of its features include:
+A way to learn about any topic on wikipedia while improving your typing skills! Some of its features include:
 - A record of all your typing project so you can easily reaccess them
 - Statistics so you can track your progress
 - Searching for topics to choose from
