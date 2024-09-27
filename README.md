@@ -6,8 +6,8 @@ A way to learn about any topic on wikipedia while improving your typing skills! 
 - Instructions/help if you get stuck
 
 ### Contributors
-- Frontend (React): [@johnmedlock](https://github.com/johnmedlock) <br>
-- Backend (Express): [@dylancrter](https://github.com/dylancrter)
+- Frontend: [@johnmedlock](https://github.com/johnmedlock) <br>
+- Backend: [@dylancrter](https://github.com/dylancrter)
 
 ### License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for more details.
