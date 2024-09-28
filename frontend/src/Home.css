@@ -1,0 +1,27 @@
+/* Home.css */
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1; /* Ensures the container takes up available space */
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .home-logo {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .home-input {
+    width: 300px;
+    max-width: 80%;
+    height: 40px;
+    font-size: 20px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+  }
+  
