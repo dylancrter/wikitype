@@ -1,0 +1,15 @@
+core functionality
+------------------
+- Create account
+- login
+- search (input link to wikipedia article)
+- dashboard (previous proj's)
+- instructions/help
+- account (email, stats, username, etc)
+
+basic architecture
+------------------
+- ui: react
+- rest api: express + node
+- database: postgres
+- deployment: ec2 + dns 
