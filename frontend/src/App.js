@@ -5,7 +5,7 @@ import TopBar from './components/TopBar/TopBar';
 import About from './pages/About/About';
 import Home from './pages/Home/Home';
 import LoginRegister from './pages/LoginRegister/LoginRegister';
-import TypingScreen from './pages/TypingScreen/TypingScreen'; // Ensure this import is correct
+import TypingScreen from './pages/TypingScreen/TypingScreen';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
@@ -23,7 +23,7 @@ function App() {
             <Route path="/" element={<Home inputValue={inputValue} handleInputChange={handleInputChange} />} />
             <Route path="/about" element={<About />} />
             <Route path="/login-register" element={<LoginRegister />} />
-            <Route path="/typing" element={<TypingScreen />} />  // New route for TypingScreen
+            <Route path="/typing" element={<TypingScreen />} />
           </Routes>
         </div>
       </div>
