@@ -1,0 +1,38 @@
+body {
+    background-color: #121212;
+    color: #ccc;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .typing-test-container {
+    width: 80%;
+    max-width: 800px;
+  }
+  
+  .typing-area {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    color: #fff;
+  }
+  
+  .typed-text {
+    color: #7f8c8d;
+  }
+  
+  .current-word {
+    background-color: #f39c12;
+    color: #121212;
+  }
+  
+  .remaining-text {
+    color: #ccc;
+  }
+  
