@@ -1,7 +1,7 @@
 // Home.js
 import React from 'react';
-import './Home.css'; // Create this CSS file
-import logo from './logo.jpeg';
+import logo from '../../logo.jpeg';
+import './Home.scss';
 
 function Home({ inputValue, handleInputChange }) {
   return (

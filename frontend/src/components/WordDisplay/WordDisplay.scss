@@ -1,0 +1,45 @@
+.word-display {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    color: #fff;
+    min-height: 150px;
+    overflow-wrap: break-word;
+  }
+  
+  .completed-word {
+    color: #4caf50;
+  }
+  
+  .current-word {
+    background-color: #f39c12;
+    color: #121212;
+  
+    .correct {
+      color: #4caf50;
+    }
+  
+    .incorrect {
+      color: #f44336;
+    }
+  
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background-color: #f39c12;
+      animation: blink 1s step-start infinite;
+      margin-left: 2px;
+    }
+  }
+  
+  .cursor {
+    height: 1.2rem;
+  }
+  
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  
