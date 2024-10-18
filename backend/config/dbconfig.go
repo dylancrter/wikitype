@@ -11,7 +11,7 @@ type PostgresConfig struct {
 var DatabaseConfig PostgresConfig = PostgresConfig{
 	Host:     "localhost",
 	Port:     5432,
-	User:     "dwc",
-	Password: "DWCbaseball7$",
-	DBName:   "wikitype",
+	User:     "your-user",
+	Password: "your-password",
+	DBName:   "your-db-name",
 }
