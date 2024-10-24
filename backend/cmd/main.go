@@ -1,36 +1,26 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
+	"log"
+	"net/http"
 
-	"github.com/dylancrter/wikitype/backend/config"
+	"github.com/dylancrter/wikitype/backend/db"
+	"github.com/dylancrter/wikitype/backend/internal/handlers"
+	"github.com/gorilla/mux"
 
 	_ "github.com/lib/pq"
 )
 
-var (
-	host     = config.DatabaseConfig.Host
-	port     = config.DatabaseConfig.Port
-	user     = config.DatabaseConfig.User
-	password = config.DatabaseConfig.Password
-	dbname   = config.DatabaseConfig.DBName
-)
-
 func main() {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		fmt.Println("Database connection unsuccessful. Panicing!")
-		panic(err)
-	}
-	defer db.Close()
+	db.InitDB()
 
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Connection successful!")
+	router := mux.NewRouter()
+
+	router.HandleFunc("/project", handlers.GetProjects).Methods("GET")
+	router.HandleFunc("/project/id", handlers.GetProjectById).Methods("GET")
+	router.HandleFunc("/project/title", handlers.GetProjectByTitle).Methods("GET")
+	router.HandleFunc("/project", handlers.CreateProject).Methods("POST")
+	router.HandleFunc("/project", handlers.DeleteProject).Methods("DELETE")
+
+	log.Fatal(http.ListenAndServe(":8080", router))
 }

@@ -19,16 +19,19 @@ var (
 )
 
 func InitDB() {
+	var err error
+
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
-	DB, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
+
+	if DB, err = sql.Open("postgres", psqlInfo); err != nil {
 		log.Fatalf("Error opening database: %v\n", err)
 	}
 
 	if err = DB.Ping(); err != nil {
 		log.Fatalf("Cannot connect to the database: %v\n", err)
 	}
+
 	fmt.Println("Connection successful!")
 }
