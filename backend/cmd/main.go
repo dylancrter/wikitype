@@ -19,6 +19,7 @@ func main() {
 	router.HandleFunc("/project", handlers.GetProjects).Methods("GET")
 	router.HandleFunc("/project/id", handlers.GetProjectById).Methods("GET")
 	router.HandleFunc("/project/title", handlers.GetProjectByTitle).Methods("GET")
+	router.HandleFunc("/project-content/id", handlers.GetProjectContentById).Methods("GET")
 	router.HandleFunc("/project", handlers.CreateProject).Methods("POST")
 	router.HandleFunc("/project", handlers.DeleteProject).Methods("DELETE")
 

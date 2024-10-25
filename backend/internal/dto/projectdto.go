@@ -1,10 +1,7 @@
 package dto
 
 type CreateProjectDTO struct {
-	Title       string
-	Description string
-	Content     string
-	Progress    int
+	Link string
 }
 
 type DeleteProjectDTO struct {

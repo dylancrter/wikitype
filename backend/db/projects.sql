@@ -1,8 +1,6 @@
 CREATE TABLE IF NOT EXISTS projects (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    description TEXT,
-    content TEXT NOT NULL,
     progress INT DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
