@@ -1,33 +1,40 @@
-import React, { useState } from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.scss';
+
+// Components
+import Metrics from './components/Metrics/Metrics';
 import TopBar from './components/TopBar/TopBar';
+
+// Pages
 import About from './pages/About/About';
 import Home from './pages/Home/Home';
 import LoginRegister from './pages/LoginRegister/LoginRegister';
 import TypingScreen from './pages/TypingScreen/TypingScreen';
 
+// Loading fallback
+const LoadingFallback = () => <div className="loading">Loading...</div>;
+
 function App() {
-  const [inputValue, setInputValue] = useState('');
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
   return (
-    <Router>
-      <div className="app-container">
-        <TopBar />
-        <div className="content-container">
-          <Routes>
-            <Route path="/" element={<Home inputValue={inputValue} handleInputChange={handleInputChange} />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/login-register" element={<LoginRegister />} />
-            <Route path="/typing" element={<TypingScreen />} />
-          </Routes>
+    <>
+      <Router>
+        <div className="App">
+          <TopBar />
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/typing" replace />} />
+              <Route path="/typing" element={<TypingScreen />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/login" element={<LoginRegister />} />
+              <Route path="*" element={<Navigate to="/typing" replace />} />
+            </Routes>
+          </Suspense>
+          <Metrics />
         </div>
-      </div>
-    </Router>
+      </Router>
+    </>
   );
 }
 
