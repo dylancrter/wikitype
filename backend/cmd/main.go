@@ -6,6 +6,7 @@ import (
 
 	"github.com/dylancrter/wikitype/backend/db"
 	"github.com/dylancrter/wikitype/backend/internal/handlers"
+	mHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
 	_ "github.com/lib/pq"
@@ -23,5 +24,10 @@ func main() {
 	router.HandleFunc("/project", handlers.CreateProject).Methods("POST")
 	router.HandleFunc("/project", handlers.DeleteProject).Methods("DELETE")
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	corsOptions := mHandlers.CORS(
+		mHandlers.AllowedOrigins([]string{"http://localhost:3000"}),
+		mHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
+		mHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}))
+
+	log.Fatal(http.ListenAndServe(":8080", corsOptions(router)))
 }
