@@ -1,45 +1,99 @@
+// WordDisplay.scss
 .word-display {
-    background-color: #222;
-    padding: 20px;
-    border-radius: 4px;
-    font-size: 1.2rem;
-    color: #fff;
-    min-height: 150px;
-    overflow-wrap: break-word;
-  }
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.5rem;
+  line-height: 2.5;
+  color: #646669;
+  text-align: left;
+  white-space: pre-wrap;
+  word-spacing: 0.4em;
   
-  .completed-word {
-    color: #4caf50;
-  }
-  
-  .current-word {
-    background-color: #f39c12;
-    color: #121212;
-  
-    .correct {
-      color: #4caf50;
+  span {
+    display: inline;
+    position: relative;
+    
+    &.completed-word {
+      color: #646669;
     }
-  
-    .incorrect {
-      color: #f44336;
-    }
-  
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      background-color: #f39c12;
-      animation: blink 1s step-start infinite;
-      margin-left: 2px;
+    
+    &.current-word {
+      color: #d1d0c5;
+      
+      .correct {
+        color: #8ebd6b;
+      }
+      
+      .incorrect {
+        color: #ca4754;
+        background: rgba(202, 71, 84, 0.3);
+      }
+      
+      .cursor {
+        position: absolute;
+        display: inline-block;
+        width: 2px;
+        height: 1.2em;
+        background-color: #d1d0c5;
+        animation: blink 1s infinite;
+        margin-left: 1px;
+        vertical-align: middle;
+      }
     }
   }
-  
-  .cursor {
-    height: 1.2rem;
-  }
-  
-  @keyframes blink {
-    50% {
-      opacity: 0;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.word-display {
+  span {
+    &.completed-word {
+      &.word-correct {
+        color: #8ebd6b;
+        opacity: 0.8;
+      }
+      
+      &.word-incorrect {
+        color: #646669;
+        opacity: 0.8;
+      }
+      
+      .correct {
+        color: #8ebd6b;
+        opacity: 0.8;
+      }
+      
+      .incorrect {
+        color: #ca4754;
+        opacity: 0.8;
+      }
     }
   }
-  
+}
+
+.cursor {
+  position: absolute;
+  width: 2px;
+  height: 1.5em;
+  background-color: #d1d0c5;
+  animation: blink 1s infinite;
+  margin-left: 0;
+  bottom: 0;
+}
+
+// Hide default input caret
+input {
+  caret-color: transparent;
+}
+
+.hidden-input {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
