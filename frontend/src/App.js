@@ -3,7 +3,6 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import './App.scss';
 
 // Components
-import Metrics from './components/Metrics/Metrics';
 import TopBar from './components/TopBar/TopBar';
 
 // Pages
@@ -31,7 +30,6 @@ function App() {
               <Route path="*" element={<Navigate to="/typing" replace />} />
             </Routes>
           </Suspense>
-          <Metrics />
         </div>
       </Router>
     </>
