@@ -1,46 +1,64 @@
-// App.scss
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --max-width: 1200px;
+  --padding-desktop: 2rem;
+  --padding-mobile: 1rem;
+  --topbar-height: 60px;
+}
+
 body {
   margin: 0;
   padding: 0;
-  background-color: #323437;
-  color: #d1d0c5;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .App {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #323437;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  background-color: var(--bg-primary);
+  width: min(100%, var(--max-width));
+  margin-inline: auto;
+  padding-inline: var(--padding-mobile);
+  padding-top: var(--topbar-height);
   
-  @media (max-width: 768px) {
-    padding: 0 1rem;
+  @media (min-width: 768px) {
+    padding-inline: var(--padding-desktop);
   }
   
-  // Ensure content takes up full height
   > div:not(.no-js-warning) {
     flex: 1;
     width: 100%;
+    max-width: 100%;
   }
 }
 
 .typing-area {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: min(100%, 1000px);
+  margin-inline: auto;
+  padding: var(--padding-mobile);
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  
+  @media (min-width: 768px) {
+    padding: var(--padding-desktop);
+  }
 }
 
 .no-js-warning {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: #ca4754;
+  inset: 0 0 auto 0;
+  background: var(--accent-secondary);
   color: white;
   text-align: center;
   padding: 1rem;
@@ -48,31 +66,31 @@ body {
 }
 
 .loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - var(--topbar-height));
   width: 100%;
-  color: #d1d0c5;
+  color: var(--text-primary);
   font-size: 1.5rem;
-  background-color: #323437;
 }
 
 // Route transitions
-.page-transition-enter {
-  opacity: 0;
-}
-
-.page-transition-enter-active {
-  opacity: 1;
-  transition: opacity 200ms ease-in;
-}
-
-.page-transition-exit {
-  opacity: 1;
-}
-
-.page-transition-exit-active {
-  opacity: 0;
-  transition: opacity 200ms ease-in;
+.page-transition {
+  &-enter {
+    opacity: 0;
+    
+    &-active {
+      opacity: 1;
+      transition: opacity 200ms ease-in;
+    }
+  }
+  
+  &-exit {
+    opacity: 1;
+    
+    &-active {
+      opacity: 0;
+      transition: opacity 200ms ease-in;
+    }
+  }
 }

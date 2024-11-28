@@ -55,17 +55,17 @@
   span {
     &.completed-word {
       &.word-correct {
-        color: #8ebd6b;
+        color: var(--text-secondary);
         opacity: 0.8;
       }
       
       &.word-incorrect {
-        color: #646669;
+        color: var(--accent-secondary);
         opacity: 0.8;
       }
       
       .correct {
-        color: #8ebd6b;
+        color: var(--accent-primary);
         opacity: 0.8;
       }
       

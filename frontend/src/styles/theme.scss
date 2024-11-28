@@ -1,0 +1,23 @@
+:root {
+    // Dark theme (default)
+    &[data-theme='dark'] {
+      --bg-primary: #323437;
+      --bg-secondary: #2c2e31;
+      --text-primary: #d1d0c5;
+      --text-secondary: #646669;
+      --accent-primary: #8ebd6b;
+      --accent-secondary: #ca4754;
+      --border-color: #404246;
+    }
+  
+    // Light theme
+    &[data-theme='light'] {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f5f5f5;
+        --text-primary: #1a1a1a;
+        --text-secondary: #4a4a4a;
+        --accent-primary: #407a2f;
+        --accent-secondary: #b13642;
+        --border-color: #d4d4d4;
+    }
+}

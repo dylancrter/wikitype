@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080';
+export const API_BASE_URL = 'http://localhost:8080';
 
 // Helper function for delay
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -119,6 +119,26 @@ export const deleteProject = async (projectId) => {
     );
   } catch (error) {
     console.error('Error deleting project:', error);
+    throw error;
+  }
+};
+
+// Save progress data for a project
+export const saveProgress = async (progressData) => {
+  try {
+    const response = await fetchWithErrorHandling(
+      `${API_BASE_URL}/project/progress`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(progressData),
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error('Error saving progress:', error);
     throw error;
   }
 };

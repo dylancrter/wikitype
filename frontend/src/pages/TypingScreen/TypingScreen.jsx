@@ -25,6 +25,8 @@ const TypingScreen = () => {
   const [error, setError] = useState(null);
 
   const inputRef = useRef(null);
+  const intervalRef = useRef(null);
+  const elapsedTimeRef = useRef(0);
 
   const [wikiUrl, setWikiUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -121,7 +123,7 @@ const TypingScreen = () => {
 
   useEffect(() => {
     if (startTime) {
-      const interval = setInterval(() => {
+      intervalRef.current = setInterval(() => {
         const elapsedMinutes = (Date.now() - startTime) / 1000 / 60;
         const calculatedWpm = Math.round((correctChars / 5) / elapsedMinutes) || 0;
         setWpm(calculatedWpm);
@@ -129,7 +131,11 @@ const TypingScreen = () => {
         setAccuracy(calculatedAccuracy);
       }, 1000);
 
-      return () => clearInterval(interval);
+      return () => {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
+      };
     }
   }, [startTime, correctChars, totalChars]);
 
@@ -138,6 +144,26 @@ const TypingScreen = () => {
       inputRef.current.focus();
     }
   }, [hasContent]);
+
+  const saveProgress = async () => {
+    try {
+      const progressData = {
+        projectId,
+        wpm,
+        accuracy,
+        progressPercent: Math.round(progress),
+        completedWords: currentChunk * CHUNK_SIZE + currentWordIndex,
+        timestamp: new Date().toISOString()
+      };
+  
+      await saveProgress(progressData);
+      setError('Progress saved successfully!');
+      setTimeout(() => setError(null), 3000);
+    } catch (err) {
+      console.error('Failed to save progress:', err);
+      setError('Failed to save progress');
+    }
+  };
 
   const handleInput = (event) => {
     const value = event.target.value;
@@ -229,7 +255,22 @@ const TypingScreen = () => {
               e.target.focus();
             }}
           />
-          <Metrics wpm={wpm} accuracy={accuracy} progress={progress} />
+          <Metrics
+            wpm={wpm}
+            accuracy={accuracy}
+            progress={progress}
+            onPause={(isPaused) => {
+              if (isPaused) {
+                if (intervalRef.current) {
+                  clearInterval(intervalRef.current);
+                  elapsedTimeRef.current = Date.now() - startTime;
+                }
+              } else {
+                setStartTime(Date.now() - (elapsedTimeRef.current || 0));
+              }
+            }}
+            onSave={saveProgress}
+          />
         </div>
       )}
     </div>

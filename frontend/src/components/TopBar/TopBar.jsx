@@ -6,19 +6,16 @@ function TopBar() {
   return (
     <div className="top-bar">
       <div className="nav-left">
-        <NavLink to="/" className="nav-link" end>
-          Home
-        </NavLink>
-        <NavLink to="/about" className="nav-link">
-          About
-        </NavLink>
-        <NavLink to="/typing" className="nav-link">
-          Typing Test
+        <NavLink to="/" className="logo" end>
+          wikitype
         </NavLink>
       </div>
       <div className="nav-right">
-        <NavLink to="/login-register" className="nav-link">
-          Login/Register
+        <NavLink to="/info" className="nav-icon" title="Information">
+          <i className="fas fa-info-circle"></i>
+        </NavLink>
+        <NavLink to="/settings" className="nav-icon" title="Settings">
+          <i className="fas fa-cog"></i>
         </NavLink>
       </div>
     </div>
