@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Metrics from '../../components/Metrics/Metrics';
 import WordDisplay from '../../components/WordDisplay/WordDisplay';
-import { createWikiProject, fetchWikiProject } from '../../services/wikiService';
+import { createWikiProject, fetchProjectContent, fetchWikiProject } from '../../services/wikiService';
 import './TypingScreen.scss';
 
-const CHUNK_SIZE = 50; // Words per chunk
+const CHUNK_SIZE = 50;
 
 const TypingScreen = () => {
   const { projectId } = useParams();
@@ -22,6 +22,7 @@ const TypingScreen = () => {
   const [totalChars, setTotalChars] = useState(0);
   const [typedHistory, setTypedHistory] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState(null);
 
   const inputRef = useRef(null);
 
@@ -29,39 +30,94 @@ const TypingScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasContent, setHasContent] = useState(false);
 
+  const processContent = (content) => {
+    if (!content) return [];
+    return content.split(/\s+/).filter(word => word.length > 0);
+  };
+
+  useEffect(() => {
+    const focusInput = () => inputRef.current?.focus();
+    
+    if (hasContent) {
+      focusInput();
+      document.addEventListener('click', focusInput);
+      return () => document.removeEventListener('click', focusInput);
+    }
+  }, [hasContent]);
+
   const handleUrlSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
+    
     try {
+      // Create project
       const project = await createWikiProject(wikiUrl);
-      const content = project.content.split(/\s+/);
-      setAllWords(content);
-      setWords(content.slice(0, CHUNK_SIZE));
+      if (!project?.id) throw new Error('Failed to create project');
+
+      // Fetch content with retries
+      let content = null;
+      for (let i = 0; i < 3; i++) {
+        try {
+          const contentData = await fetchProjectContent(project.id);
+          if (contentData?.content) {
+            content = contentData.content;
+            break;
+          }
+          await new Promise(r => setTimeout(r, 1000));
+        } catch (err) {
+          if (i === 2) throw err;
+        }
+      }
+
+      if (!content) throw new Error('Failed to fetch content');
+
+      const words = processContent(content);
+      if (words.length === 0) throw new Error('No valid content found');
+
+      setAllWords(words);
+      setWords(words.slice(0, CHUNK_SIZE));
       setHasContent(true);
     } catch (error) {
       console.error('Failed to fetch wiki content:', error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
     const loadWikiContent = async () => {
+      if (!projectId) return;
+      
+      setIsLoading(true);
+      setError(null);
+      
       try {
         const project = await fetchWikiProject(projectId);
-        const words = project.content.split(/\s+/);
+        if (!project || !project.content) {
+          throw new Error('Invalid project content');
+        }
+        
+        const words = processContent(project.content);
+        if (words.length === 0) {
+          throw new Error('No valid content found');
+        }
+        
         setAllWords(words);
         setWords(words.slice(0, CHUNK_SIZE));
+        setHasContent(true);
       } catch (error) {
         console.error('Failed to load wiki content:', error);
+        setError(error.message);
+        setHasContent(false);
+      } finally {
+        setIsLoading(false);
       }
     };
-
+  
     loadWikiContent();
   }, [projectId]);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
 
   useEffect(() => {
     if (startTime) {
@@ -76,6 +132,12 @@ const TypingScreen = () => {
       return () => clearInterval(interval);
     }
   }, [startTime, correctChars, totalChars]);
+
+  useEffect(() => {
+    if (hasContent && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [hasContent]);
 
   const handleInput = (event) => {
     const value = event.target.value;
@@ -98,7 +160,6 @@ const TypingScreen = () => {
       setTotalChars(prev => prev + currentWord.length);
       
       if (currentWordIndex === words.length - 1) {
-        // Load next chunk
         const nextChunk = currentChunk + 1;
         const start = nextChunk * CHUNK_SIZE;
         const end = start + CHUNK_SIZE;
@@ -116,7 +177,6 @@ const TypingScreen = () => {
       setInput('');
       setCurrentCharIndex(0);
       
-      // Update progress
       const totalProgress = ((currentChunk * CHUNK_SIZE + currentWordIndex) / allWords.length) * 100;
       setProgress(Math.min(100, Math.round(totalProgress)));
     } else {
@@ -126,10 +186,11 @@ const TypingScreen = () => {
   };
 
   return (
-    <div className="typing-test-container">
+    <div className="typing-test-container" onClick={() => inputRef.current?.focus()}>
       {!hasContent ? (
         <div className="wiki-search">
           <h1>Enter Wikipedia URL</h1>
+          {error && <div className="error-message">{error}</div>}
           <form onSubmit={handleUrlSubmit}>
             <input
               type="text"
@@ -137,6 +198,7 @@ const TypingScreen = () => {
               onChange={(e) => setWikiUrl(e.target.value)}
               placeholder="https://en.wikipedia.org/wiki/..."
               className="wiki-input"
+              disabled={isLoading}
             />
             <button type="submit" disabled={isLoading}>
               {isLoading ? 'Loading...' : 'Start Typing'}
@@ -144,7 +206,7 @@ const TypingScreen = () => {
           </form>
         </div>
       ) : (
-        <>
+        <div className="typing-area">
           <div className="progress-bar">
             <div className="progress" style={{ width: `${progress}%` }}></div>
           </div>
@@ -161,9 +223,14 @@ const TypingScreen = () => {
             value={input}
             onChange={handleInput}
             className="hidden-input"
+            autoFocus
+            onBlur={(e) => {
+              e.preventDefault();
+              e.target.focus();
+            }}
           />
           <Metrics wpm={wpm} accuracy={accuracy} progress={progress} />
-        </>
+        </div>
       )}
     </div>
   );

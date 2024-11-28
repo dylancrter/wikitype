@@ -7,8 +7,9 @@ import (
 )
 
 type ProjectContent struct {
-	ID      int    `json:"project_id"`
-	Content string `json:"content"`
+	ID        int    `json:"id"`
+	ProjectID int    `json:"project_id"`
+	Content   string `json:"content"`
 }
 
 func GetProjectContentById(id int) (*ProjectContent, error) {
@@ -16,6 +17,7 @@ func GetProjectContentById(id int) (*ProjectContent, error) {
 
 	err := db.DB.QueryRow("SELECT * from project_content where project_id = $1", id).Scan(
 		&projectContent.ID,
+		&projectContent.ProjectID,
 		&projectContent.Content,
 	)
 	if err != nil {

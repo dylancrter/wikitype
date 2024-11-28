@@ -1,38 +1,33 @@
 .typing-test-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
   min-height: 100vh;
+  padding: 2rem;
+  background-color: #323437;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #323437;
+}
+
+.hidden-input {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: transparent;
+  cursor: default;
+  z-index: 1;
   
-  h1 {
-    color: #d1d0c5;
-    text-align: center;
-    margin-bottom: 3rem;
-    font-size: 2rem;
-    font-weight: 700;
+  &:focus {
+    outline: none;
   }
+}
 
-  .typing-area {
-    width: 100%;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .hidden-input {
-    opacity: 0;
-    position: absolute;
-    pointer-events: none;
-    width: 0;
-    height: 0;
-  }
+.typing-area {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .progress-bar {
