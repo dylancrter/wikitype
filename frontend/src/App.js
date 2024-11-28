@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.scss';
+import { SettingsProvider } from './contexts/SettingsContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import './styles/theme.scss';
 
@@ -19,20 +20,22 @@ function App() {
   return (
     <>
       <ThemeProvider>
-        <Router>
-          <div className="App">
-            <TopBar />
-            <Suspense fallback={<LoadingFallback />}>
-              <Routes>
-                <Route path="/" element={<Navigate to="/typing" replace />} />
-                <Route path="/typing" element={<TypingScreen />} />
-                <Route path="/info" element={<Info />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="*" element={<Navigate to="/typing" replace />} />
-              </Routes>
-            </Suspense>
-          </div>
-        </Router>
+        <SettingsProvider>
+          <Router>
+            <div className="App">
+              <TopBar />
+              <Suspense fallback={<LoadingFallback />}>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/typing" replace />} />
+                  <Route path="/typing" element={<TypingScreen />} />
+                  <Route path="/info" element={<Info />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="*" element={<Navigate to="/typing" replace />} />
+                </Routes>
+              </Suspense>
+            </div>
+          </Router>
+        </SettingsProvider>
       </ThemeProvider>
     </>
   );

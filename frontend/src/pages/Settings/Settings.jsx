@@ -1,27 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSettings } from '../../contexts/SettingsContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import './Settings.scss';
 
 const Settings = () => {
     const { theme, setTheme } = useTheme();
-    const [settings, setSettings] = useState({
-        theme: 'dark',
-        chunkSize: 50,
-        showWPM: true,
-        showAccuracy: true,
-        showProgress: true
-    });
+    const { settings, setSettings } = useSettings();
 
+    
     const handleChange = (setting, value) => {
         if (setting === 'theme') {
             setTheme(value);
         } else {
             setSettings(prev => ({
                 ...prev,
-                [setting]: value
-            }));
-            localStorage.setItem('wikitype-settings', JSON.stringify({
-                ...settings,
                 [setting]: value
             }));
         }
@@ -45,7 +37,7 @@ const Settings = () => {
             </div>
         </div>
 
-        <div className="settings-section">
+        {/* <div className="settings-section">
             <h2>Typing</h2>
             <div className="setting-item">
             <label>Words per chunk</label>
@@ -57,7 +49,7 @@ const Settings = () => {
                 max="100"
             />
             </div>
-        </div>
+        </div> */}
 
         <div className="settings-section">
             <h2>Display</h2>

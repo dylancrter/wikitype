@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSettings } from '../../contexts/SettingsContext';
 import './Metrics.scss';
 
 const Metrics = ({ wpm, accuracy, progress, onPause, onSave }) => {
+  const { settings } = useSettings();
   const [isPaused, setIsPaused] = useState(false);
 
   const handlePause = useCallback(() => {
@@ -24,20 +26,30 @@ const Metrics = ({ wpm, accuracy, progress, onPause, onSave }) => {
 
   return (
     <div className={`metrics ${isPaused ? 'paused' : ''}`}>
-      <div className="metric">
-        <span className="label">wpm</span>
-        <span className="value">{wpm}</span>
-      </div>
-      <div className="separator" />
-      <div className="metric">
-        <span className="label">acc</span>
-        <span className="value">{accuracy}%</span>
-      </div>
-      <div className="separator" />
-      <div className="metric">
-        <span className="label">progress</span>
-        <span className="value">{Math.round(progress)}%</span>
-      </div>
+      {settings.showWPM && (
+        <>
+          <div className="metric">
+            <span className="label">wpm</span>
+            <span className="value">{wpm}</span>
+          </div>
+          <div className="separator" />
+        </>
+      )}
+      {settings.showAccuracy && (
+        <>
+          <div className="metric">
+            <span className="label">acc</span>
+            <span className="value">{accuracy}%</span>
+          </div>
+          <div className="separator" />
+        </>
+      )}
+      {settings.showProgress && (
+        <div className="metric">
+          <span className="label">progress</span>
+          <span className="value">{Math.round(progress)}%</span>
+        </div>
+      )}
       <button 
         className="pause-button" 
         onClick={handlePause}
@@ -50,7 +62,7 @@ const Metrics = ({ wpm, accuracy, progress, onPause, onSave }) => {
         onClick={onSave}
         title="Save progress"
       >
-          <i className="fas fa-save"></i>
+        <i className="fas fa-save"></i>
       </button>
     </div>
   );
